@@ -8,9 +8,9 @@ const Header = () => {
    ];
 
    return (
-      <div className="flex p-4 justify-between bg-opacity-10 backdrop-blur-md shadow-md bg-white">
+      <div className="flex p-4 justify-between items-center bg-opacity-10 backdrop-blur-md shadow-md bg-white">
          <div>
-            <span>Minning</span>
+            <span>LOGO</span>
          </div>
          <div className="flex space-x-4 justify-center items-center">
             {navMenu.map((menu, i) => (
