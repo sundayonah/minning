@@ -18,7 +18,7 @@ const Header = () => {
                   <Link href={menu.url}>{menu.name}</Link>
                </ul>
             ))}
-            <button className="border border-orange-500 text-orange-500 px-3 py-1 rounded-lg hover:bg-orange-500 hover:text-white hover:border-transparent">
+            <button className="border border-[#BF9221] text-[#BF9221] px-3 py-1 rounded-lg hover:bg-[#BF9221] hover:text-white hover:border-transparent">
                Connect Wallet
             </button>
          </div>

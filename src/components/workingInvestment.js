@@ -17,7 +17,7 @@ const investment = () => {
       <>
          <main className=" flex flex-col md:flex-row justify-evenly items-center m-6">
             {/* left side */}
-            <div className="w-full md:w-[40%] text-center p-4 border border-gray-500 rounded-lg shadow-md mb-6 md:mb-0">
+            <div className="w-[40%] text-center p-4 border border-gray-500 rounded-lg shadow-md">
                <div className="flex justify-between items-center mb-4 ">
                   <span>Daily ROI Amount</span>
                   <span className="text-xs">0.00/0 BUSD</span>
@@ -28,7 +28,7 @@ const investment = () => {
                   </button>
                   <span className="flex pt-4">Next Mine Time: 00:00:00</span>
                </div>
-               <div className=" mt-9">
+               <div className="mt-9">
                   <button className="w-[90%] border border-[#BF9221] bg-gold-500 text-white px-4 py-2 rounded-lg bg-[#BF9221] hover:text-white hover:border-transparent">
                      Withdraw Profit
                   </button>
@@ -39,7 +39,7 @@ const investment = () => {
             </div>
 
             {/* right side */}
-            <div className="w-full md:w-[40%] text-center p-4 mt-6 border border-gray-500 rounded-lg shadow-md">
+            <div className="w-[40%] text-center p-4 mt-6 border border-gray-500 rounded-lg shadow-md">
                <div className="flex justify-between items-center mb-4 ">
                   <span>Wallet Balance</span>
                   <span className="text-xs">0.00/0 BUSD</span>
