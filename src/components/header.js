@@ -7,8 +7,6 @@ import { useWeb3Modal, useWeb3ModalTheme } from '@web3modal/wagmi/react';
 import ConnectButton from './connectButton';
 
 const Header = () => {
-   const { open } = useWeb3Modal();
-
    const { address, isConnected } = useAccount();
    const { connect } = useConnect({
       connector: new InjectedConnector(),
@@ -20,16 +18,16 @@ const Header = () => {
       { name: 'Investment', url: '/' },
       { name: 'Referal Menu', url: '/referalMenu' },
    ];
-   const { themeMode, themeVariables, setThemeMode, setThemeVariables } =
-      useWeb3ModalTheme();
+   // const { themeMode, themeVariables, setThemeMode, setThemeVariables } =
+   //    useWeb3ModalTheme();
 
-   setThemeMode('blue');
+   // setThemeMode('blue');
 
-   setThemeVariables({
-      '--w3m-color-mix': '#303030',
-      '--w3m-color-mix-strength': 40,
-      '--w3m-accent': '#BF9221',
-   });
+   // setThemeVariables({
+   //    '--w3m-color-mix': '#303030',
+   //    '--w3m-color-mix-strength': 40,
+   //    '--w3m-accent': '#BF9221',
+   // });
 
    //    console.log(address);
 

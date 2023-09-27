@@ -1,15 +1,48 @@
 import Header from '@/components/header';
 import React, { useState } from 'react';
+import { useAccount } from 'wagmi';
 
 const ReferalMenu = () => {
    const [isModalOpen, setIsModalOpen] = useState(false);
+   const [referralLink, setReferralLink] = useState('');
+   const [isLinkCopied, setIsLinkCopied] = useState(false);
+   const { address, isConnected } = useAccount();
 
    // Function to toggle the modal's visibility
    const toggleModal = () => {
       setIsModalOpen(!isModalOpen);
    };
 
-   return (
+   // // Function to generate and set the referral link
+   // const generateReferralLink = () => {
+   //    // Replace this with your actual referral link generation logic
+   //    const generatedLink = `http://localhost:3000/referalMenu/${address}`;
+   //    setReferralLink(generatedLink);
+   //    setIsLinkCopied(false); // Reset the copied state when generating a new link
+   // };
+
+   const generateReferralLink = () => {
+      // Replace this with your actual referral link generation logic
+      const baseUrl = 'http://localhost:3000/referalMenu';
+      const referralLink = `${baseUrl}?ref=${address}`;
+      setReferralLink(referralLink);
+      setIsLinkCopied(false); // Reset the copied state when generating a new link
+   };
+
+   // Function to copy the link to the clipboard
+   const copyToClipboard = () => {
+      const linkInput = document.getElementById('referralLinkInput');
+
+      if (linkInput) {
+         linkInput.select();
+         document.execCommand('copy');
+         setIsLinkCopied(true);
+      }
+   };
+
+   //launchpad.rigelprotocol.com/app/v1/mine?ref=0x32e80e16aafdbbb20ba55690f275a2608e3ecfc0
+
+   https: return (
       <>
          <Header />
          <main className="flex flex-col md:flex-row justify-evenly items-center m-6">
@@ -44,7 +77,16 @@ const ReferalMenu = () => {
                            d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
                         />
                      </svg>
-                     <button onClick={toggleModal}>Referral Link</button>
+                     <button
+                        onClick={() => {
+                           toggleModal();
+                           generateReferralLink();
+                        }}
+                     >
+                        Referral Link
+                     </button>
+
+                     {/* <button onClick={toggleModal}>Referral Link</button> */}
                   </p>
                </span>
             </div>
@@ -93,10 +135,71 @@ const ReferalMenu = () => {
                      <h2 className="flex justify-center text-2xl font-bold mb-5">
                         Get 10% Referral Bonus
                      </h2>
-                     <input
-                        className="w-[90%] m-5 p-2 border border-[#BF9221] bg-transparent rounded-lg "
-                        placeholder="Referral link"
-                     />
+                     <div className="flex justify-center items-center">
+                        <input
+                           className="w-[90%] m-5 p-2 border border-[#BF9221] bg-transparent rounded-lg "
+                           placeholder="Referral link"
+                           value={referralLink}
+                           readOnly
+                           id="referralLinkInput"
+                        />
+                        {/* {!isLinkCopied ? (
+                           <div
+                              className=" cursor-pointer text-[#BF9221] hover:text-[#BF9221]"
+                              onClick={copyToClipboard}
+                           >
+                              {isLinkCopied ? 'Copied!' : 'Copy'}
+                           </div>
+                        ) : (
+                           <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className=" cursor-pointer h-6 w-6 text-[#BF9221] hover:text-[#BF9221]"
+                              onClick={copyToClipboard}
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                           >
+                              <rect
+                                 x="9"
+                                 y="9"
+                                 width="13"
+                                 height="13"
+                                 rx="2"
+                                 ry="2"
+                              />
+                              <path d="M9 1h6a2 2 0 012 2v12a2 2 0 01-2 2H9a2 2 0 01-2-2V3a2 2 0 012-2z" />
+                              <path d="M9 1v12a2 2 0 002 2h6M15 9l-6 6" />
+                           </svg>
+                        )} */}
+                        {!isLinkCopied && (
+                           <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              onClick={copyToClipboard}
+                              className="flex cursor-pointer text-[#BF9221]"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                           >
+                              <rect
+                                 x="9"
+                                 y="9"
+                                 width="13"
+                                 height="13"
+                                 rx="2"
+                                 ry="2"
+                              />
+                              <path d="M9 1h6a2 2 0 012 2v12a2 2 0 01-2 2H9a2 2 0 01-2-2V3a2 2 0 012-2z" />
+                              <path d="M9 1v12a2 2 0 002 2h6M15 9l-6 6" />
+                           </svg>
+                        )}
+                        {isLinkCopied ? 'Copied!' : 'Copy'}
+                     </div>
+
                      <p className="text-gray-200">
                         Receive a 10% token bonus when your referral invests in
                         a project.
