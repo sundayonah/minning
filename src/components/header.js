@@ -29,8 +29,6 @@ const Header = () => {
    //    '--w3m-accent': '#BF9221',
    // });
 
-   //    console.log(address);
-
    return (
       <div className="flex p-4 justify-between items-center bg-opacity-10 backdrop-blur-md shadow-md bg-white">
          <div>

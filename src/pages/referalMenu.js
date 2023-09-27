@@ -23,7 +23,7 @@ const ReferalMenu = () => {
 
    const generateReferralLink = () => {
       // Replace this with your actual referral link generation logic
-      const baseUrl = 'http://localhost:3000/referalMenu';
+      const baseUrl = 'http://localhost:3000/';
       const referralLink = `${baseUrl}?ref=${address}`;
       setReferralLink(referralLink);
       setIsLinkCopied(false); // Reset the copied state when generating a new link
@@ -40,9 +40,7 @@ const ReferalMenu = () => {
       }
    };
 
-   //launchpad.rigelprotocol.com/app/v1/mine?ref=0x32e80e16aafdbbb20ba55690f275a2608e3ecfc0
-
-   https: return (
+   return (
       <>
          <Header />
          <main className="flex flex-col md:flex-row justify-evenly items-center m-6">
