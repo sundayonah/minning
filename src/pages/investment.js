@@ -14,7 +14,7 @@ const investment = () => {
                   <button className="w-full border border-[#BF9221] bg-gold-500 text-white px-4 py-2 rounded-lg hover:bg-[#BF9221] hover:text-white hover:border-transparent">
                      Mine Now
                   </button>
-                  <p className="flex pt-4 space-x-2">
+                  <p className="flex mt-4 space-x-2">
                      <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
