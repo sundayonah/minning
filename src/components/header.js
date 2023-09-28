@@ -18,6 +18,7 @@ const Header = () => {
       { name: 'Investment', url: '/' },
       { name: 'Referal Menu', url: '/referalMenu' },
    ];
+
    // const { themeMode, themeVariables, setThemeMode, setThemeVariables } =
    //    useWeb3ModalTheme();
 
