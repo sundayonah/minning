@@ -23,7 +23,7 @@ const ReferalMenu = () => {
 
    const generateReferralLink = () => {
       // Replace this with your actual referral link generation logic
-      const baseUrl = 'http://localhost:3000/';
+      const baseUrl = 'https://minning-dapp.netlify.app/';
       const referralLink = `${baseUrl}?ref=${address}`;
       setReferralLink(referralLink);
       setIsLinkCopied(false); // Reset the copied state when generating a new link
