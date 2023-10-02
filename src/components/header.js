@@ -32,7 +32,7 @@ const Header = () => {
          <div className=" pr-2">
             <span>LOGO</span>
          </div>
-         <div className="flex space-x-4 justify-center items-center">
+         <div className="flex space-x-5 justify-center items-center">
             {navMenu.map((menu, i) => (
                <ul key={i}>
                   <div
@@ -45,6 +45,8 @@ const Header = () => {
                </ul>
             ))}
             <ConnectButton />
+
+            {/* <w3m-button disabled true size="md" balance="hide" /> */}
          </div>
          <style jsx>{`
             .active-link {

@@ -130,7 +130,7 @@ const ReferalMenu = () => {
          {/* Modal */}
          {isModalOpen && (
             <div className="fixed inset-0 flex flex-col md:flex-row items-center justify-center z-50 bg-[#2a2929] bg-opacity-75">
-               <div className="w-[60%] md:w-4/5 lg:w-3/5 xl:w-2/5">
+               <div className="w-[60%] md:w-3/5 lg:w-3/5 xl:w-2/5">
                   {/*modal content here */}
                   <div className="bg-[#404040] rounded-lg shadow-xl p-4">
                      <div className="flex justify-end">
