@@ -1,8 +1,17 @@
+import { MinningContext } from '@/Context/MinnigContext';
 import Header from '@/components/header';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 
 const ReferalMenu = () => {
+   const {
+      referralReward,
+      withdrawnReferral,
+      ClaimReferralRewards,
+      noReferralYet,
+      referralLoading,
+   } = useContext(MinningContext);
+
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [referralLink, setReferralLink] = useState('');
    const [isLinkCopied, setIsLinkCopied] = useState(false);
@@ -13,17 +22,9 @@ const ReferalMenu = () => {
       setIsModalOpen(!isModalOpen);
    };
 
-   // // Function to generate and set the referral link
-   // const generateReferralLink = () => {
-   //    // Replace this with your actual referral link generation logic
-   //    const generatedLink = `http://localhost:3000/referalMenu/${address}`;
-   //    setReferralLink(generatedLink);
-   //    setIsLinkCopied(false); // Reset the copied state when generating a new link
-   // };
-
    const generateReferralLink = () => {
-      // Replace this with your actual referral link generation logic
-      const baseUrl = 'https://minning-dapp.netlify.app/';
+      // const baseUrl = 'https://minning-dapp.netlify.app/';
+      const baseUrl = 'http://localhosst:3000/';
       const referralLink = `${baseUrl}?ref=${address}`;
       setReferralLink(referralLink);
       setIsLinkCopied(false); // Reset the copied state when generating a new link
@@ -47,17 +48,54 @@ const ReferalMenu = () => {
             <div className="w-full md:w-[40%] text-center p-4 mt-6 border border-gray-500 rounded-lg shadow-md">
                <div className="flex justify-between items-center mb-4 ">
                   <span>Available Amount Earned on Referral</span>
-                  <span className="text-xs">0 BUSD</span>
+                  <span className="text-xs">{referralReward} BUSD</span>
                </div>
                <div className="flex justify-between items-center mt-10 mb-4 ">
                   <span>Total Rewards Withdrawn from Referrals</span>
-                  <span className="text-xs">0 BUSD</span>
+                  <span className="text-xs">{withdrawnReferral} BUSD</span>
                </div>
                <div className="">
-                  <button className="w-full border border-none bg-gold-500 text-white px-4 py-2 mt-10 rounded-lg bg-[#BF9221] hover:text-white hover:border-transparent">
-                     Cashout Referral Award
+                  {/* <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white"></div> */}
+
+                  <button
+                     onClick={() => ClaimReferralRewards()}
+                     className={
+                        'w-full border border-none bg-gold-500 text-white px-4 py-2 mt-10 rounded-lg bg-[#BF9221] hover:text-white hover:border-transparent'
+                     }
+                  >
+                     {referralLoading ? (
+                        <div class="flex items-center justify-center">
+                           <div class="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white"></div>
+                        </div>
+                     ) : (
+                        'Cashout Referral Rewards'
+                     )}
                   </button>
                </div>
+
+               {noReferralYet && (
+                  <span className="flex justify-end text-xs text-red-600 pt-2">
+                     No Reward Yet
+                  </span>
+               )}
+               <p className="flex mt-4 space-x-2">
+                  <svg
+                     xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke-width="1.5"
+                     stroke="currentColor"
+                     class="w-6 h-6  text-[#BF9221]"
+                  >
+                     <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                     />
+                  </svg>
+
+                  <span className="">Next Mine Time: {withdrawnReferral}</span>
+               </p>
                <span className="flex justify-end mt-10 text-[#4169E1] cursor-pointer">
                   {/* Referral Link */}
                   <p className="flex pt-4 space-x-2">

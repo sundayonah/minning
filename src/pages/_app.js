@@ -1,3 +1,4 @@
+import { MinningContextProvider } from '@/Context/MinnigContext';
 import '@/styles/globals.css';
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 
@@ -14,6 +15,7 @@ import {
 
 // 1. Get projectId
 const projectId = 'de7693706b2bb6e9b2e049f09e7ebad1';
+// const projectId = 'de7693706b2bb6e9b2e049f09e7ebad1';
 
 // 2. Create wagmiConfig
 const metadata = {
@@ -32,7 +34,9 @@ createWeb3Modal({ wagmiConfig, projectId, chains });
 export default function App({ Component, pageProps }) {
    return (
       <WagmiConfig config={wagmiConfig}>
-         <Component {...pageProps} />
+         <MinningContextProvider>
+            <Component {...pageProps} />
+         </MinningContextProvider>
       </WagmiConfig>
    );
 }

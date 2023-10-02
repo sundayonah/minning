@@ -1,22 +1,18 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
-import { InjectedConnector } from 'wagmi/connectors/injected';
-import { useWeb3Modal, useWeb3ModalTheme } from '@web3modal/wagmi/react';
+import React, { useContext } from 'react';
+
 import ConnectButton from './connectButton';
+import { MinningContext } from '@/Context/MinnigContext';
 
 const Header = () => {
-   const { address, isConnected } = useAccount();
-   const { connect } = useConnect({
-      connector: new InjectedConnector(),
-   });
-   const { disconnect } = useDisconnect();
+   const { connectWallet, connect } = useContext(MinningContext);
+
    const router = useRouter();
 
    const navMenu = [
-      { name: 'Investment', url: '/' },
-      { name: 'Referal Menu', url: '/referalMenu' },
+      { name: 'Invest', url: '/' },
+      { name: 'Referral', url: '/referalMenu' },
    ];
 
    // const { themeMode, themeVariables, setThemeMode, setThemeVariables } =
@@ -31,8 +27,9 @@ const Header = () => {
    // });
 
    return (
-      <div className="flex p-4 justify-between items-center bg-opacity-10 backdrop-blur-md shadow-md bg-white">
-         <div>
+      // <div className="flex p-4 justify-between items-center bg-opacity-10 backdrop-blur-md shadow-md bg-white">
+      <div className="flex p-4 justify-between items-center">
+         <div className=" pr-2">
             <span>LOGO</span>
          </div>
          <div className="flex space-x-4 justify-center items-center">
@@ -48,24 +45,6 @@ const Header = () => {
                </ul>
             ))}
             <ConnectButton />
-            {/* <p>{address}</p> */}
-            {/* <w3m-button /> */}
-
-            {/* {isConnected ? (
-               <button
-                  onClick={() => disconnect()}
-                  className="border border-[#BF9221] text-[#BF9221] px-3 py-1 rounded-lg hover:bg-[#BF9221] hover:text-white hover:border-transparent"
-               >
-                  Connected
-               </button>
-            ) : (
-               <button
-                  onClick={() => connect()}
-                  className="border border-[#BF9221] text-[#BF9221] px-3 py-1 rounded-lg hover:bg-[#BF9221] hover:text-white hover:border-transparent"
-               >
-                  Connect Wallet
-               </button>
-            )} */}
          </div>
          <style jsx>{`
             .active-link {
