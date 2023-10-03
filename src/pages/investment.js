@@ -29,7 +29,9 @@ const Investment = () => {
             <div className="w-full md:w-[40%] text-center p-4 border border-gray-500 rounded-lg shadow-md mt-6">
                <div className="flex justify-between items-center mb-4 ">
                   <span>Daily ROI Amount</span>
-                  <span className="text-xs">{dailyRoi} BUSD</span>
+                  <span className="text-xs">
+                     {dailyRoi} <span className="text-gray-400">YOLVA</span>
+                  </span>
                </div>
                {/* <div className="">
                   <button className="w-full border border-[#BF9221] bg-gold-500 text-white px-4 py-2 rounded-lg hover:bg-[#BF9221] hover:text-white hover:border-transparent">
@@ -57,7 +59,10 @@ const Investment = () => {
                <div className="mt-10">
                   <div className="flex justify-between items-center mb-4  ">
                      <span>Profit Pool</span>
-                     <span className="text-xs">{profitPool} BUSD</span>
+                     <span className="text-xs">
+                        {profitPool}{' '}
+                        <span className="text-gray-400">YOLVA</span>
+                     </span>
                   </div>
                   <button
                      onClick={() => UnStake()}
@@ -104,11 +109,16 @@ const Investment = () => {
             <div className="w-full md:w-[40%] text-center p-4 border border-gray-500 rounded-lg shadow-md mt-6">
                <div className="flex justify-between items-center mb-4 ">
                   <span>Wallet Balance</span>
-                  <span className="text-xs">{walletBalance} BUSD</span>
+                  <span className="text-xs">
+                     {walletBalance}{' '}
+                     <span className="text-gray-400">YOLVA</span>
+                  </span>
                </div>
                <div className="flex justify-between items-center mb-4 ">
                   <span>Total Stake</span>
-                  <span className="text-xs">{totalStake} BUSD</span>
+                  <span className="text-xs">
+                     {totalStake} <span className="text-gray-400">YOLVA</span>
+                  </span>
                </div>
                <div className="mt-9">
                   <input

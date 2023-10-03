@@ -52,12 +52,28 @@ export const MinningContextProvider = ({ children }) => {
             //    'https://bsc-dataseed1.binance.org/'
             // );
             const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const walletBalance = await provider.getBalance(address);
+            const signer = provider.getSigner();
 
-            const balance = parseFloat(
-               ethers.utils.formatEther(walletBalance)
-            ).toFixed(5);
-            setWalletBalance(balance);
+            const getApproveContractAddress = new ethers.Contract(
+               minningContractAddress,
+               minningAbi,
+               signer
+            );
+
+            const approveContractAddress =
+               await getApproveContractAddress.TOKEN();
+
+            const contractInstance = new ethers.Contract(
+               approveContractAddress,
+               approveAbi,
+               signer
+            );
+
+            const balance = await contractInstance.balanceOf(address);
+            const stringBalance = ethers.utils.formatEther(balance.toString());
+
+            const formattedBalance = parseFloat(stringBalance).toFixed(3);
+            setWalletBalance(formattedBalance);
          } catch (error) {
             console.error(error);
          }
@@ -112,7 +128,7 @@ export const MinningContextProvider = ({ children }) => {
 
             // total staking
             const max = await contractInstance.totalStaking();
-            const totalStake = max.toString();
+            const totalStake = ethers.utils.formatEther(max.toString());
             setTotalStake(totalStake);
 
             // daily roi
@@ -124,8 +140,12 @@ export const MinningContextProvider = ({ children }) => {
 
             // profit pool
             const profitPool = await contractInstance.calculateRewards(address);
-            const profitPoolAmount = profitPool.toString();
-            setProfitPool(profitPoolAmount);
+            const profitPoolAmount = ethers.utils.formatEther(
+               profitPool.toString()
+            );
+            const formattedProfitPool =
+               parseFloat(profitPoolAmount).toFixed(13);
+            setProfitPool(formattedProfitPool);
 
             // referral bonus gain
             const referralBonusGain = await contractInstance.referralBonusGain(
@@ -184,8 +204,6 @@ export const MinningContextProvider = ({ children }) => {
                gasLimit: 100000,
                gasPrice: ethers.utils.parseUnits('10.0', 'gwei'),
             });
-
-            setProfitLoading(false);
             const receipt = await tx.wait();
             if (receipt.status == 1) {
                setProfitLoading(false);
@@ -193,17 +211,6 @@ export const MinningContextProvider = ({ children }) => {
                setProfitLoading(false);
             }
          }
-
-         // //   check if the transaction was successful
-         // if (receipt.status === 1) {
-         //    // success();
-         //    // setStatus('success');
-         //    console.log('successful transaction');
-         // } else {
-         //    // error();
-         //    // setStatus('error');
-         //    console.log('error');
-         // }
       } catch (err) {
          console.error(err);
          // error();
@@ -239,7 +246,7 @@ export const MinningContextProvider = ({ children }) => {
          // Pass the referralAddress as an argument to the Stake function
 
          const tx = await contract.stake(_amount, actualReferralAddress, {
-            gasLimit: 100000,
+            gasLimit: 300000,
             gasPrice: ethers.utils.parseUnits('10.0', 'gwei'),
          });
 
@@ -262,7 +269,6 @@ export const MinningContextProvider = ({ children }) => {
       }
       setStakeLoading(false);
    };
-
    ///// APPROVE F(x) ///////////
    const Approved = async () => {
       // setIsLoading(true);
@@ -286,11 +292,10 @@ export const MinningContextProvider = ({ children }) => {
             signer
          );
 
-         // const checkIfApprove = await contractInstance.allowance(
-         //    address,
-         //    minningContractAddress
-         // );
-         // console.log(checkIfApprove);
+         const checkIfApprove = await contractInstance.allowance(
+            address,
+            minningContractAddress
+         );
          // console.log(contractInstance);
 
          // Fetch the balance before performing the check
@@ -310,7 +315,7 @@ export const MinningContextProvider = ({ children }) => {
          if (
             amountToString < minimumToString
             //  &&
-            //   amountToString > balance
+            //   amountToString > walletBalance
          ) {
             // setApprovedLoading(true);
             // setIsLoading(true);

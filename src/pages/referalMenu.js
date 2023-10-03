@@ -48,11 +48,17 @@ const ReferalMenu = () => {
             <div className="w-full md:w-[40%] text-center p-4 mt-6 border border-gray-500 rounded-lg shadow-md">
                <div className="flex justify-between items-center mb-4 ">
                   <span>Available Amount Earned on Referral</span>
-                  <span className="text-xs">{referralReward} BUSD</span>
+                  <span className="text-xs">
+                     {referralReward}{' '}
+                     <span className="text-gray-400">YOLVA</span>
+                  </span>
                </div>
                <div className="flex justify-between items-center mt-10 mb-4 ">
                   <span>Total Rewards Withdrawn from Referrals</span>
-                  <span className="text-xs">{withdrawnReferral} BUSD</span>
+                  <span className="text-xs ">
+                     {withdrawnReferral}{' '}
+                     <span className="text-gray-400">YOLVA</span>
+                  </span>
                </div>
                <div className="">
                   {/* <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white"></div> */}
