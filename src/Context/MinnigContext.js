@@ -24,6 +24,7 @@ export const MinningContextProvider = ({ children }) => {
    const [walletBalance, setWalletBalance] = useState();
    const [totalStake, setTotalStake] = useState(); // f(x)
    const [stakeLoading, setStakeLoading] = useState(false);
+   const [approvedLoading, setApprovedLoading] = useState(false);
    const [stakeAmount, setStakeAmount] = useState('');
    const [referralReward, setReferralReward] = useState('');
    const [isApproved, setIsApproved] = useState(false);
@@ -56,7 +57,7 @@ export const MinningContextProvider = ({ children }) => {
             const balance = parseFloat(
                ethers.utils.formatEther(walletBalance)
             ).toFixed(5);
-            setWalletBalance(balance.toString());
+            setWalletBalance(balance);
          } catch (error) {
             console.error(error);
          }
@@ -213,7 +214,7 @@ export const MinningContextProvider = ({ children }) => {
 
    ///// STAKE F(x) ///////////
    const Stake = async () => {
-      // setStakeLoading(true);
+      setStakeLoading(true);
       try {
          const provider = new ethers.providers.Web3Provider(window.ethereum);
          const signer = provider.getSigner();
@@ -223,15 +224,24 @@ export const MinningContextProvider = ({ children }) => {
             signer
          );
 
-         const __amount = ethers.utils.parseEther(stakeAmount);
-         const stringAmount = __amount.toString();
+         const _amount = ethers.utils.parseEther(stakeAmount, 'ether');
+         // const stringAmount = __amount.toString();
+         console.log(_amount.toString());
 
-         const tx = await contract.stake(stringAmount, address, {
+         // Extract the referral address from the URL query parameters
+         const queryParams = new URLSearchParams(window.location.search);
+         const referralAddress = queryParams.get('ref');
+         console.log(referralAddress);
+
+         const actualReferralAddress =
+            referralAddress || '0x0000000000000000000000000000000000000000';
+
+         // Pass the referralAddress as an argument to the Stake function
+
+         const tx = await contract.stake(_amount, actualReferralAddress, {
             gasLimit: 100000,
             gasPrice: ethers.utils.parseUnits('10.0', 'gwei'),
          });
-
-         console.log(tx);
 
          setStakeAmount('');
 
@@ -240,15 +250,17 @@ export const MinningContextProvider = ({ children }) => {
          //   check if the transaction was successful
          if (receipt.status === 1) {
             console.log('successful transaction');
+            setStakeLoading(false);
          } else {
             console.log('error');
+            setStakeLoading(false);
          }
       } catch (err) {
          console.error(err);
          // error();
          // setStatus('error');
       }
-      // setStakeLoading(false);
+      setStakeLoading(false);
    };
 
    ///// APPROVE F(x) ///////////
@@ -281,45 +293,69 @@ export const MinningContextProvider = ({ children }) => {
          // console.log(checkIfApprove);
          // console.log(contractInstance);
 
+         // Fetch the balance before performing the check
+         const walletBalance = await provider.getBalance(address);
+         const balance = parseFloat(ethers.utils.formatEther(walletBalance));
+
          const minimumStakingAmount =
             await getApproveContractAddress.getMinimumStakeAmount();
+         const minimumToString = parseFloat(minimumStakingAmount.toString());
 
-         const min = minimumStakingAmount.toString();
-
-         console.log(min);
-         console.log(stakeAmount);
+         // Convert the input stakeAmount to Ether
+         const _amount = ethers.utils.parseEther(stakeAmount, 'ether');
+         const amountToString = _amount.toString();
 
          let tx;
-         if (stakeAmount < 10) {
-            console.log('No Way');
+
+         if (
+            amountToString < minimumToString
+            //  &&
+            //   amountToString > balance
+         ) {
+            // setApprovedLoading(true);
+            // setIsLoading(true);
+
             setLessAmount(true);
             setTimeout(() => {
                setLessAmount(false);
             }, 3000);
+
             setIsApproved(false);
          } else {
-            const value = ethers.utils.parseEther(stakeAmount, 'ether');
-            tx = await contractInstance.approve(minningContractAddress, value, {
-               gasLimit: 51000,
-            });
-            console.log('yes');
+            setApprovedLoading(true);
+            // const value = ethers.utils.parseEther(_amount, 'ether');
+            tx = await contractInstance.approve(
+               minningContractAddress,
+               amountToString,
+               {
+                  gasLimit: 51000,
+               }
+            );
 
-            setIsApproved(true);
+            // setIsApproved(true);
+            const receipt = await tx.wait();
+            //   check if the transaction was successful
+            if (receipt.status === 1) {
+               setIsApproved(true);
+               setApprovedLoading(false);
+            } else {
+            }
          }
 
-         // console.log(tx);
-
-         // const receipt = await tx.wait();
-
-         // console.log(receipt);
-         //   check if the transaction was successful
-         // if (receipt.status === 1) {
-         // } else {
-         // }
          // setIsApproved(true);
       } catch (error) {
          console.error(error);
+
+         if (error.code === 4001) {
+            // User cancelled the transaction, set loading to false
+            setApprovedLoading(false);
+         } else {
+            // Handle other transaction errors
+            console.error(error);
+         }
+         setApprovedLoading(false);
       }
+
       // setIsLoading(false);
    };
 
@@ -382,6 +418,8 @@ export const MinningContextProvider = ({ children }) => {
             profitPool,
             withdrawnReferral,
             lessAmount,
+            approvedLoading,
+            stakeLoading,
 
             // f(x)s
             Stake,

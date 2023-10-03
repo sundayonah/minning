@@ -21,7 +21,7 @@ const projectId = 'de7693706b2bb6e9b2e049f09e7ebad1';
 const metadata = {
    name: 'Minning dApp',
    description: 'Web3Modal Example',
-   url: 'https://web3modal.com',
+   url: 'Web3Modal Example',
    icons: ['https://avatars.githubusercontent.com/u/37784886'],
 };
 

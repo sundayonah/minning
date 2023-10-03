@@ -17,6 +17,8 @@ const Investment = () => {
       noProfitYet,
       profitLoading,
       lessAmount,
+      approvedLoading,
+      stakeLoading,
    } = useContext(MinningContext);
    // 5000000000000000000
 
@@ -121,14 +123,26 @@ const Investment = () => {
                            onClick={() => Stake()}
                            className="w-full border border-[#BF9221] bg-gold-500 text-white px-4 py-2 rounded-lg bg-[#BF9221] hover:text-white hover:border-transparent"
                         >
-                           Stake
+                           {stakeLoading ? (
+                              <div class="flex items-center justify-center">
+                                 <div class="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white"></div>
+                              </div>
+                           ) : (
+                              'Stake'
+                           )}
                         </button>
                      ) : (
                         <button
                            onClick={() => Approved()}
                            className="w-full border border-none bg-gold-500 text-white px-4 py-2 rounded-lg bg-[#BF9221] hover:text-white hover:border-transparent"
                         >
-                           Approve
+                           {approvedLoading ? (
+                              <div class="flex items-center justify-center">
+                                 <div class="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white"></div>
+                              </div>
+                           ) : (
+                              'Approve'
+                           )}
                         </button>
                      )}
                      {lessAmount && (
