@@ -36,6 +36,8 @@ export const MinningContextProvider = ({ children }) => {
    const [noProfitYet, setNoProfitYet] = useState(false);
    const [profitLoading, setProfitLoading] = useState(false);
    const [lessAmount, setLessAmount] = useState(false);
+   const [provider, setProvider] = useState(null);
+   const [signer, setSigner] = useState(null);
 
    // console.log(address);
    // console.log(isConnected);
@@ -43,14 +45,29 @@ export const MinningContextProvider = ({ children }) => {
    const handleChange = async (e) => {
       setStakeAmount(e.target.value);
    };
+   useEffect(() => {
+      async function initializeWeb3() {
+         if (typeof window.ethereum !== 'undefined') {
+            const web3Provider = new ethers.providers.Web3Provider(
+               window.ethereum
+            );
+            const web3Signer = web3Provider.getSigner();
+            setProvider(web3Provider);
+            setSigner(web3Signer);
+         }
+      }
+
+      initializeWeb3();
+   }, []);
 
    ///// WALLET BALANCE ///////////
    useEffect(() => {
       const fetchBalance = async () => {
          try {
             // const provider = new ethers.getDefaultProvider(
-            //    'https://bsc-dataseed1.binance.org/'
+            //    'https://data-seed-prebsc-1-s1.binance.org:8545/'
             // );
+
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
 
@@ -83,36 +100,8 @@ export const MinningContextProvider = ({ children }) => {
       }
    }, [address]);
 
-   ///// REFERRALREWARDS F(x) ///////////
    useEffect(() => {
-      const ReferralReward = async () => {
-         try {
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            // const provider = new ethers.getDefaultProvider(
-            //    'https://bsc-dataseed1.binance.org/'
-            // );
-
-            // const signer = provider.getSigner();
-            const contractInstance = new ethers.Contract(
-               minningContractAddress,
-               minningAbi,
-               provider
-            );
-            const max = await contractInstance.referralRewards(address);
-            const referralReward = max.toString();
-            // const minlock = ethers.utils.formatUnits(max, 'ether');
-            // const formattedMinLock = minlock.toLocaleString();
-            setReferralReward(referralReward);
-         } catch (error) {
-            console.error(error);
-         }
-      };
-      ReferralReward();
-   }, [address]);
-
-   ///// TOTAL STAKE, Daily Roi, Profit Pool, referralBonusGain ///////////
-   useEffect(() => {
-      const TotalStaking = async () => {
+      const viewFunction = async () => {
          try {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             // const provider = new ethers.getDefaultProvider(
@@ -138,6 +127,11 @@ export const MinningContextProvider = ({ children }) => {
             const dailyRoiAmount = (dailyRoiInEther / 60) * 30;
             setDailyRoi(dailyRoiAmount);
 
+            // referral rewards
+            const maxReferral = await contractInstance.referralRewards(address);
+            const referralReward = maxReferral.toString();
+            setReferralReward(referralReward);
+
             // profit pool
             const profitPool = await contractInstance.calculateRewards(address);
             const profitPoolAmount = ethers.utils.formatEther(
@@ -151,7 +145,6 @@ export const MinningContextProvider = ({ children }) => {
             const referralBonusGain = await contractInstance.referralBonusGain(
                address
             );
-
             const referralBonusWithdrawn = referralBonusGain[1];
             const nextReferralTime = referralBonusWithdrawn;
 
@@ -171,25 +164,19 @@ export const MinningContextProvider = ({ children }) => {
          }
       };
 
-      TotalStaking();
+      viewFunction();
    }, [address]);
 
    ///// UNSTAKE F(x) ///////////
    const UnStake = async () => {
+      const contract = new ethers.Contract(
+         minningContractAddress,
+         minningAbi,
+         signer
+      );
       setNoProfitYet(false);
       // setStakeLoading(true);
       try {
-         const provider = new ethers.providers.Web3Provider(window.ethereum);
-         const signer = provider.getSigner();
-         const contract = new ethers.Contract(
-            minningContractAddress,
-            minningAbi,
-            signer
-         );
-         // const __amount = ethers.utils.parseEther(stakeAmount);
-         // // console.log(__amount);
-         // const stringAmount = __amount.toString();
-         // console.log(stringAmount);
          let tx;
 
          if (profitPool == 0) {
@@ -201,20 +188,20 @@ export const MinningContextProvider = ({ children }) => {
             setNoProfitYet(false);
             setProfitLoading(true);
             tx = await contract.unStake(0, {
-               gasLimit: 100000,
+               gasLimit: 200000,
                gasPrice: ethers.utils.parseUnits('10.0', 'gwei'),
             });
             const receipt = await tx.wait();
             if (receipt.status == 1) {
                setProfitLoading(false);
+               // Reload the page after a successful transaction
+               window.location.reload();
             } else {
                setProfitLoading(false);
             }
          }
       } catch (err) {
          console.error(err);
-         // error();
-         // setStatus('error');
       }
       // setStakeLoading(false);
    };
@@ -223,8 +210,6 @@ export const MinningContextProvider = ({ children }) => {
    const Stake = async () => {
       setStakeLoading(true);
       try {
-         const provider = new ethers.providers.Web3Provider(window.ethereum);
-         const signer = provider.getSigner();
          const contract = new ethers.Contract(
             minningContractAddress,
             minningAbi,
@@ -275,9 +260,6 @@ export const MinningContextProvider = ({ children }) => {
       // setLessAmount(false);
 
       try {
-         const provider = new ethers.providers.Web3Provider(window.ethereum);
-         const signer = provider.getSigner();
-
          const getApproveContractAddress = new ethers.Contract(
             minningContractAddress,
             minningAbi,
@@ -369,8 +351,6 @@ export const MinningContextProvider = ({ children }) => {
       setNoReferralYet(false);
 
       try {
-         const provider = new ethers.providers.Web3Provider(window.ethereum);
-         const signer = provider.getSigner();
          const contract = new ethers.Contract(
             minningContractAddress,
             minningAbi,
