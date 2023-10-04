@@ -24,9 +24,9 @@ const Investment = () => {
 
    return (
       <>
-         <main className="flex flex-col md:flex-row justify-evenly items-center m-6">
+         <main className="flex flex-col md:flex-row justify-evenly items-center m-4">
             {/* left side */}
-            <div className="w-full md:w-[40%] text-center p-4 border border-gray-500 rounded-lg shadow-md mt-6">
+            <div className="w-full md:w-[35%] text-center p-4 border border-gray-500 rounded-lg shadow-md mt-6">
                <div className="flex justify-between items-center mb-4 ">
                   <span>Daily ROI Amount</span>
                   <span className="text-xs">
@@ -106,7 +106,7 @@ const Investment = () => {
             </div>
 
             {/* right side */}
-            <div className="w-full md:w-[40%] text-center p-4 border border-gray-500 rounded-lg shadow-md mt-6">
+            <div className="w-full md:w-[35%] text-center p-4 border border-gray-500 rounded-lg shadow-md mt-6">
                <div className="flex justify-between items-center mb-4 ">
                   <span>Wallet Balance</span>
                   <span className="text-xs">
