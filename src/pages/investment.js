@@ -20,7 +20,6 @@ const Investment = () => {
       approvedLoading,
       stakeLoading,
    } = useContext(MinningContext);
-   // 5000000000000000000
 
    return (
       <>
