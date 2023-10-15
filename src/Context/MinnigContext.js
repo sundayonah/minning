@@ -11,7 +11,8 @@ import approveAbi from '../contract/approve.json';
 export const MinningContext = createContext({});
 
 export const MinningContextProvider = ({ children }) => {
-   const minningContractAddress = '0x72BC9712BEb034977f5A0830CE1F3E6ff9440486';
+   const minningContractAddress = '0xE2113ac80Dde5248E771053FD3c031250E87d777';
+   // const minningTestnetContractAddress = '0x72BC9712BEb034977f5A0830CE1F3E6ff9440486';
    // const approveContractAddress = '0x97Df9831BEA07703F72287A90C163726315eB1Fd';
 
    const { address, isConnected } = useAccount();
@@ -218,12 +219,10 @@ export const MinningContextProvider = ({ children }) => {
 
          const _amount = ethers.utils.parseEther(stakeAmount, 'ether');
          // const stringAmount = __amount.toString();
-         console.log(_amount.toString());
 
          // Extract the referral address from the URL query parameters
          const queryParams = new URLSearchParams(window.location.search);
          const referralAddress = queryParams.get('ref');
-         console.log(referralAddress);
 
          const actualReferralAddress =
             referralAddress || '0x0000000000000000000000000000000000000000';
@@ -241,7 +240,6 @@ export const MinningContextProvider = ({ children }) => {
 
          //   check if the transaction was successful
          if (receipt.status === 1) {
-            console.log('successful transaction');
             setStakeLoading(false);
          } else {
             console.log('error');

@@ -29,7 +29,7 @@ const Header = () => {
 
    return (
       // <div className="flex p-4 justify-between items-center bg-opacity-10 backdrop-blur-md shadow-md bg-white">
-      <div className="flex p-4 justify-between items-center">
+      <div className="flex p-4 justify-between items-center border-b border-gray-700 shadow-custom">
          <div className=" pr-2">
             {/* <span>LOGO</span> */}
             <img
